@@ -89,4 +89,9 @@ The realised move was much larger than both the IV-implied move and the short st
 * **Data limitations:** `yfinance` does not provide historical option chains. This analysis uses **current chains** for illustration and historical price data for realised moves.
 * **Personal account:** Trading 212 does not support listed options; this project extends equity-only exposure into an options-based event study for learning purposes.
 
----
+## Next Steps
+
+* Extend to **multiple PLTR earnings events** (both “volatility crush” cases where realised < implied and “underpricing” cases like Aug 2025).
+* Compare with other tech names (e.g., AAPL, NVDA) to test if mispricing patterns are stock-specific or general.
+* Explore **cross-sectional IV skews** (puts vs calls) and link to market sentiment.
+* Implement a **simple backtest** of short straddle strategies around earnings to measure cumulative P/L under realistic assumptions.
