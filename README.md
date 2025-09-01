@@ -35,7 +35,7 @@ This mini-project investigates how Palantir’s (PLTR) implied volatility (IV) s
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 ```bash
 python -m venv .venv
