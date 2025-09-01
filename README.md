@@ -1,31 +1,42 @@
-# Palantir (PLTR) Implied Volatility Smile – Earnings Event Study
+# Palantir (PLTR) Earnings Event – Implied Volatility Smile Study
 
-This mini-project analyzes how Palantir's (PLTR) implied volatility (IV) smile behaves around earnings and quantifies the volatility crush afterwards. It includes a short straddle payoff illustration (research-only; Trading 212 does not offer listed options).
+This mini-project investigates how Palantir’s (PLTR) implied volatility (IV) smile behaved around an earnings release and compares the market’s implied move with the realised move. It also illustrates the payoff of a short ATM straddle.
+---
 
-## Goals
-- Construct IV smiles (IV vs strike/spot) for near-term expiries before and after earnings.
-- Compare implied move vs realized move around the event.
-- Illustrate a short straddle payoff and how IV crush affects it.
+## Objectives
+
+* Build IV smiles (IV vs strike/spot) for a near-term expiry around earnings.
+* Quantify the implied move from options vs the realised move in the stock.
+* Illustrate the short straddle payoff and how outcomes depend on realised vs implied volatility.
+
+---
 
 ## Data
-- Source: `yfinance` options chains for PLTR.
-- Scope: start with one earnings event; extend to multiple events for stability.
+
+* **Source:** `yfinance` (Yahoo Finance API wrapper).
+* **Scope:** Demonstration on PLTR earnings, 4 Aug 2025. Extendable to multiple events for robustness.
+
+---
 
 ## Repository Structure
+
 ```
 .
 ├── notebooks/
-│   └── 01_pltr_iv_smile_event_study.ipynb
-├── figures/
-├── docs/
-├── src/
-├── requirements.txt
+│   └── 01_pltr_iv_smile_event_study.ipynb   # Main analysis
+├── figures/                                 # Exported plots
+├── docs/                                    # Summaries, CSV outputs
+├── src/                                     # (Optional) helper modules
+├── requirements.txt                         # Dependencies
 ├── .gitignore
 ├── LICENSE
 └── README.md
 ```
 
-## Setup
+---
+
+## ⚙️ Setup
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate   # Windows: .venv\Scripts\activate
@@ -33,21 +44,49 @@ pip install -r requirements.txt
 jupyter notebook
 ```
 
-## Workflow
-1. Collect option chains via `yfinance` around a chosen earnings date.
-2. Build pre vs post-event smiles for a comparable maturity (e.g., ~30 days).
-3. Compute ATM implied move (IV × sqrt(T)) vs realized move (abs return).
-4. Simulate a short straddle payoff using ATM call+put premiums and realized move.
-5. Export figures to `figures/` and write a 1–2 page report in `docs/`.
+---
 
-## Key Plots
-- `iv_smile_pre.png`, `iv_smile_post.png`
-- `iv_crush_atm.png`
-- `straddle_payoff.png`
+## Workflow
+
+1. Fetch option chains from Yahoo via `yfinance`.
+2. Select a \~30D expiry nearest to the earnings date.
+3. Plot IV smile (implied vol vs strike/spot).
+4. Compute implied moves:
+
+   * ATM IV × √T
+   * ATM short straddle premium ÷ spot
+5. Compute realised move: stock close-to-close across the earnings event.
+6. Illustrate short straddle payoff and compare realised vs implied.
+7. Export plots** to `figures/` and summaries to `docs/`.
+
+---
+
+## Results: PLTR Earnings (2025-08-04)
+
+* **Spot:** \~\$157
+* **ATM IV:** \~50% annualised
+* **Implied move (ATM IV·√T):** \~4.6%
+* **Straddle breakeven:** \~4.7%
+* **Realised move:** \~12.3%
+
+**Interpretation:**
+The realised move was much larger than both the IV-implied move and the short straddle breakeven. In this case, the **options market underpriced event risk**. A short straddle seller would have lost money.
+
+---
+
+## Key Figures
+
+* IV smile: `figures/iv_smile_example.png`
+* Straddle payoff: `figures/straddle_payoff.png`
+* Price path around earnings: `figures/price_around_earnings.png`
+* Implied vs realised comparison: `figures/implied_vs_realised.png`
+
+---
 
 ## Caveats
-- Research-only; ignores slippage, costs, assignment, and risk controls.
-- Trading 212 does not support options; this is an illustrative extension to equity exposure.
 
-## Author
-David Crowe
+* **Research only:** ignores commissions, bid–ask spreads, margin, early exercise, assignment, and tail risk.
+* **Data limitations:** `yfinance` does not provide historical option chains. This analysis uses **current chains** for illustration and historical price data for realised moves.
+* **Personal account:** Trading 212 does not support listed options; this project extends equity-only exposure into an options-based event study for learning purposes.
+
+---
